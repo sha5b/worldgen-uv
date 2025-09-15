@@ -1,0 +1,53 @@
+# File: .gitignore
+# Purpose: Ignore local/ephemeral files for the WorldGen WSL setup project.
+# Connection: Keeps secrets like .env out of git, avoids committing build artifacts, venvs, and
+# the cloned upstream repo under external/WorldGen which is recreated by setup-wsl.sh.
+
+# Secrets
+.env
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.dist-info/
+.eggs/
+
+# Build artifacts
+build/
+dist/
+site/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+logs/
+*.log
+*.tmp
+
+# uv / tool-specific artifacts
+uv.lock
+.python-version
+
+# External repositories fetched by setup
+external/WorldGen/
+
+# Outputs (if you decide to store generated assets here)
+outputs/
+artifacts/

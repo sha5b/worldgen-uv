@@ -1,0 +1,54 @@
+# File: pyproject.toml
+# Purpose: Project configuration for a Windows/uv-based setup to run the WorldGen package.
+# This project manages dependencies compatible with Windows and CUDA 12.8.
+# Connection: We install the upstream WorldGen repo in editable mode with --no-deps so that this file
+# fully controls dependency resolution on Windows, avoiding Linux-only wheels in upstream.
+
+[project]
+name = "worldgen-uv"
+version = "0.1.0"
+description = "uv-based Windows setup to run the WorldGen 3D scene generator"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Your Name" }
+]
+license = { text = "Apache-2.0" }
+
+# Important: We intentionally do NOT declare torch/torchvision here because we need to install them
+# from NVIDIA/PyTorch CUDA 12.8 wheels on Windows using a custom index URL (see README).
+# We also exclude the Linux-only nunchaku wheel.
+dependencies = [
+    "diffusers>=0.33.1",
+    "xformers>=0.0.30",
+    "transformers>=4.48.3",
+    "py360convert>=0.1.0",
+    "einops>=0.7.0",
+    "pillow>=8.0.0",
+    "scikit-image>=0.24.0",
+    "sentencepiece>=0.2.0",
+    "peft>=0.7.1",
+    "open3d>=0.19.0",
+    "trimesh>=4.6.1",
+    # Upstream uses a modified viser; keep their fork.
+    "viser @ git+https://github.com/ZiYang-xie/viser.git",
+    # UniK3D dependency
+    "UniK3D @ git+https://github.com/lpiccinelli-eth/UniK3D.git",
+]
+
+[project.optional-dependencies]
+# If you are on Linux and want to include the nunchaku prebuilt wheel, you can opt-in via:
+linux = [
+    "nunchaku @ https://github.com/mit-han-lab/nunchaku/releases/download/v0.2.0/nunchaku-0.2.0+torch2.7-cp311-cp311-linux_x86_64.whl; sys_platform != 'win32'",
+]
+
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv]
+# Keep default PyPI for most packages; torch/torchvision will be installed separately
+# with a custom index as documented in README.
